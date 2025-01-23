@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://cty2fymi1xifx"]
+
+[ext_resource type="Script" path="res://Assets/Scripts/player.gd" id="1_nnkhm"]
+[ext_resource type="Texture2D" uid="uid://dkf1orw1as0n6" path="res://Assets/Sprites/dinossauro_right.png" id="2_l8xy0"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_aylou"]
+size = Vector2(157, 159)
+
+[node name="Player" type="Area2D"]
+collision_mask = 2
+script = ExtResource("1_nnkhm")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.065, 0.065)
+texture = ExtResource("2_l8xy0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, 0.5)
+shape = SubResource("RectangleShape2D_aylou")

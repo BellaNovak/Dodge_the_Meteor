@@ -1,0 +1,80 @@
+[gd_scene load_steps=3 format=3 uid="uid://bfwg72y3f5rt1"]
+
+[ext_resource type="Script" path="res://Assets/Scripts/main_menu.gd" id="1_hch81"]
+[ext_resource type="Texture2D" uid="uid://ddvmqdsdenlpk" path="res://Assets/Sprites/background.jpg" id="2_olg8l"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1285.0
+offset_bottom = 720.0
+script = ExtResource("1_hch81")
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(639.5, 359.5)
+scale = Vector2(2.056, 2.008)
+texture = ExtResource("2_olg8l")
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -279.5
+offset_top = 50.0
+offset_right = 279.5
+offset_bottom = 138.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 64
+text = "Dodge the Meteor"
+
+[node name="StartButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -129.5
+offset_top = -130.0
+offset_right = 129.5
+offset_bottom = -58.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 46
+text = "Start Game"
+
+[node name="PhaseSelect" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -260.5
+offset_top = -320.0
+offset_right = 258.5
+offset_bottom = -162.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Phase1Button" type="Button" parent="PhaseSelect"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Fase 1"
+
+[node name="Phase2Button" type="Button" parent="PhaseSelect"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Fase 2"
+
+[node name="Phase3Button" type="Button" parent="PhaseSelect"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Fase 3"
+
+[connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="PhaseSelect/Phase1Button" to="." method="_on_phase_1_button_pressed"]
+[connection signal="pressed" from="PhaseSelect/Phase2Button" to="." method="_on_phase_2_button_pressed"]
+[connection signal="pressed" from="PhaseSelect/Phase3Button" to="." method="_on_phase_3_button_pressed"]
