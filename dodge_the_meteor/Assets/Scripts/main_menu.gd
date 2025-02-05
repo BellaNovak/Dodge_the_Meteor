@@ -6,7 +6,6 @@ func _on_start_button_pressed():
 	#queue_free()
 	start_game_at_phase(0)
 
-	
 func _on_phase_1_button_pressed():
 	start_game_at_phase(0)
 
