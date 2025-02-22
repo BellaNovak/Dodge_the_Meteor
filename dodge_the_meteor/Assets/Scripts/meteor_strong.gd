@@ -9,6 +9,6 @@ func _process(delta):
 
 func _on_area_entered(area):
 	if area.name == "Player":
-		area.take_damage(20)
+		area.take_damage(30)
 		print(area.current_hp)
 		queue_free()

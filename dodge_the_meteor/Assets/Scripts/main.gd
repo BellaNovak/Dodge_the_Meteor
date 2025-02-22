@@ -1,22 +1,25 @@
 extends Node2D
 
 @onready var meteor_scene = preload("res://Scenes/meteor.tscn")
-@onready var human_scene = preload("res://Scenes/human.tscn")
+@onready var meteor_strong_scene = preload("res://Scenes/meteor_strong.tscn")
 @onready var meat_scene = preload("res://Scenes/meat.tscn")
+@onready var human_scene = preload("res://Scenes/human.tscn")
 @onready var helath_bar = $UI/HealthBar
 @onready var timer_label = $UI/TimerLabel
 @onready var phase_complete_label = $UI/PhaseComplete
+@onready var pause_button = $UI/PauseButton
 
 @export var phase_data = [
-	{"time": 61, "player_hp": 100, "meteor_spawn_time": 1.5, "meat_spawn_time": 15.0, "human_spawn_time": 20.0},
-	{"time": 91, "player_hp": 80, "meteor_spawn_time": 1.0, "meat_spawn_time": 20.0, "human_spawn_time": 30.0},
-	{"time": 121, "player_hp": 50, "meteor_spawn_time": 0.8, "meat_spawn_time": 45.0, "human_spawn_time": 50.0},
+	{"time": 61, "player_hp": 100, "meteor_spawn_time": 1.25, "meteor_strong_spawn_time": 70.0, "meat_spawn_time": 15.0, "human_spawn_time": 70.0},
+	{"time": 91, "player_hp": 80, "meteor_spawn_time": 100.0, "meteor_strong_spawn_time": 1.1, "meat_spawn_time": 100.0, "human_spawn_time": 25.0},
+	{"time": 121, "player_hp": 70, "meteor_spawn_time": 1.0, "meteor_strong_spawn_time": 4.0, "meat_spawn_time": 40.0, "human_spawn_time": 45.0},
 ]
 
 var current_phase = 0
 var phase_time = 60
 var elapsed_time = 0.0
 var is_phase_running = false
+var is_paused = false
 
 func _ready():
 	start_phase(current_phase)
@@ -24,9 +27,9 @@ func _ready():
 	$Player.connect("player_heal", update_ui)
 	$Player.connect("player_hit", update_ui)
 	#update_ui()
-	
+		
 func _process(delta):
-	if is_phase_running:
+	if is_phase_running and not is_paused:
 		elapsed_time += delta
 		var remaining_time = phase_time - elapsed_time
 		timer_label.text = str(floor(remaining_time))
@@ -55,6 +58,9 @@ func start_phase(phase_index):
 	$MeteorSpawner.wait_time = phase["meteor_spawn_time"]
 	$MeteorSpawner.start()
 	
+	$MeteorStrongSpawner.wait_time = phase["meteor_strong_spawn_time"]
+	$MeteorStrongSpawner.start()
+	
 	$MeatSpawner.wait_time = phase["meat_spawn_time"]
 	$MeatSpawner.start()
 	
@@ -66,6 +72,7 @@ func start_phase(phase_index):
 			
 func next_phase():
 	$MeteorSpawner.stop()
+	$MeteorStrongSpawner.stop()
 	$HumanSpawner.stop()
 	$MeatSpawner.stop()
 	
@@ -91,6 +98,7 @@ func restart_phase():
 	
 func game_over():
 	$MeteorSpawner.stop()
+	$MeteorStrongSpawner.stop()
 	$HumanSpawner.stop()
 	$MeatSpawner.stop()	
 	clear_objects()
@@ -134,3 +142,23 @@ func _on_meat_spawner_timeout():
 	#meat.position = Vector2(randf() * get_viewport_rect().size.x, -500)
 	add_child(meat)
 	meat.add_to_group("objects_to_clear")
+
+func _on_meteor_strong_spawner_timeout():
+	var meteor_strong = meteor_strong_scene.instantiate()
+	meteor_strong.position = Vector2(randf() * get_viewport_rect().size.x, -50)
+	add_child(meteor_strong)
+	meteor_strong.add_to_group("objects_to_clear")
+
+func _on_pause_button_pressed():
+	if not get_tree().paused:
+		_pause_game()
+	else:
+		_resume_game()	
+	
+func _pause_game():
+	is_paused = true
+	get_tree().paused = true
+
+func _resume_game():
+	is_paused = false
+	get_tree().paused = false

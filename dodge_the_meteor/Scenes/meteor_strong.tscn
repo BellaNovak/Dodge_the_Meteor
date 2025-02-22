@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://ccl545tx226wy"]
+
+[ext_resource type="Script" path="res://Assets/Scripts/meteor_strong.gd" id="1_5brk1"]
+[ext_resource type="Texture2D" uid="uid://diyp8hndunsbr" path="res://Assets/Sprites/meteoro_strong.png" id="1_5wck0"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_u06ph"]
+radius = 70.0
+height = 194.0
+
+[node name="MeteorStrong" type="Area2D"]
+script = ExtResource("1_5brk1")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = -0.479966
+scale = Vector2(0.33, 0.314)
+texture = ExtResource("1_5wck0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-16, -5)
+shape = SubResource("CapsuleShape2D_u06ph")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
